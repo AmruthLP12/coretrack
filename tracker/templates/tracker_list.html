@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Tickets - CoreTrack{% endblock %}
+
+{% block content %}
+<div class="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    
+    <!-- Hero Section -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+            <h1 class="text-4xl font-extrabold tracking-tight text-base-content lg:text-5xl">
+                Support Tickets
+            </h1>
+            <p class="mt-3 text-lg text-base-content/60 max-w-2xl">
+                Manage and track all enterprise support requests in one centralized dashboard.
+            </p>
+        </div>
+        <div>
+            <a href="{% url 'tracker-create' %}" class="btn btn-primary btn-lg shadow-lg shadow-primary/20 hover:scale-105 transition-all group">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                Create New Ticket
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Overview (Optional, but looks premium) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="stats shadow bg-base-100 border border-base-300">
+            <div class="stat">
+                <div class="stat-title">Total Tickets</div>
+                <div class="stat-value text-primary font-black">{{ trackers|length }}</div>
+                <div class="stat-desc">Across all categories</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tickets Grid -->
+    {% if trackers %}
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {% for obj in trackers %}
+        <div class="card bg-base-100 border border-base-300 shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 group overflow-hidden">
+            <!-- Progress indicator based on status (visual flavor) -->
+            <div class="h-1.5 w-full bg-base-200">
+                <div class="h-full {% if obj.status == 'approved' %}bg-success{% elif obj.status == 'pending' %}bg-info{% elif obj.status == 'rejected' %}bg-error{% else %}bg-primary{% endif %}" style="width: 100%"></div>
+            </div>
+            
+            <div class="card-body p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="badge badge-outline badge-sm font-mono opacity-50">{{ obj.ticket_id }}</div>
+                    <div class="badge badge-md {% if obj.status == 'approved' %}badge-success text-success-content{% elif obj.status == 'pending' %}badge-info text-info-content{% elif obj.status == 'rejected' %}badge-error text-error-content{% else %}badge-primary text-primary-content{% endif %} capitalize font-semibold shadow-sm">
+                        {{ obj.get_status_display }}
+                    </div>
+                </div>
+
+                <h3 class="card-title text-xl font-bold group-hover:text-primary transition-colors">
+                    {{ obj.data.title|default:"No Title" }}
+                </h3>
+                
+                <p class="text-base-content/70 line-clamp-2 mt-1 mb-4">
+                    {{ obj.data.description|default:"No description provided for this ticket." }}
+                </p>
+
+                <div class="divider opacity-50 my-2"></div>
+
+                <!-- Meta Info Grid -->
+                <div class="grid grid-cols-2 gap-4 mt-2">
+                    {% if obj.data.priority %}
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase font-bold tracking-wider opacity-40">Priority</span>
+                        <span class="text-sm font-medium flex items-center gap-1.5 capitalise">
+                            <span class="w-2 h-2 rounded-full {% if obj.data.priority == 'high' %}bg-error{% elif obj.data.priority == 'medium' %}bg-warning{% else %}bg-success{% endif %} animate-pulse"></span>
+                            {{ obj.data.priority }}
+                        </span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if obj.data.amount %}
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase font-bold tracking-wider opacity-40">Amount</span>
+                        <span class="text-sm font-bold text-base-content">${{ obj.data.amount }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="card-actions justify-end mt-6 pt-4 border-t border-base-200/50">
+                    <a href="{% url 'tracker-update' obj.pk %}" class="btn btn-sm btn-ghost hover:bg-primary/10 hover:text-primary transition-all gap-2">
+                        View Details
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="flex flex-col items-center justify-center py-20 text-center animate-in zoom-in-95 duration-500">
+        <div class="w-24 h-24 bg-base-300/30 rounded-full flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 opacity-20">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25-2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+            </svg>
+        </div>
+        <h2 class="text-2xl font-bold">No tickets found</h2>
+        <p class="text-base-content/60 mt-2 max-w-sm">It looks like you haven't created any tracking tickets yet. Start by creating your first one!</p>
+        <a href="{% url 'tracker-create' %}" class="btn btn-primary mt-8">Create First Ticket</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

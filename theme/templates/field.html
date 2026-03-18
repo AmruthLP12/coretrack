@@ -1,0 +1,44 @@
+<div class="space-y-2">
+  {% if field.label %}
+    <label
+      for="{{ field.id_for_label }}"
+      class="flex items-center text-sm font-semibold text-text-secondary"
+    >
+      {% if label_icon %}
+        <i class="{{ label_icon }} mr-2 text-primary-500"></i>
+      {% endif %}
+      {{ field.label }}
+      {% if field.field.required %}
+        <span class="text-error-500 ml-1">*</span>
+      {% endif %}
+    </label>
+  {% endif %}
+
+  <div class="relative">
+    {% spaceless %}
+      {% if input_icon %}
+        <i class="{{ input_icon }} absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary pointer-events-none"></i>
+      {% endif %}
+
+      {% if field.field.disabled %}
+        <div class="pointer-events-none opacity-60 cursor-not-allowed ">
+          {{ field }}
+        </div>
+      {% else %}
+        {{ field }}
+      {% endif %}
+    {% endspaceless %}
+  </div>
+
+  {% if field.help_text %}
+    <p class="text-xs text-text-tertiary flex items-center mt-1">
+      <i class="fas fa-info-circle mr-1 text-info-500"></i>{{ field.help_text }}
+    </p>
+  {% endif %}
+
+  {% for error in field.errors %}
+    <p class="text-error-500 text-xs mt-1 flex items-center">
+      <i class="fas fa-exclamation-triangle mr-1"></i>{{ error }}
+    </p>
+  {% endfor %}
+</div>
