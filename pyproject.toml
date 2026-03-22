@@ -10,4 +10,5 @@ dependencies = [
     "django-autocomplete-light>=3.12.1",
     "django-tailwind[cookiecutter,honcho,reload]>=4.4.2",
     "python-dotenv>=1.2.2",
+    "whitenoise>=6.12.0",
 ]
