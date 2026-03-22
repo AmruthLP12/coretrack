@@ -146,7 +146,6 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"]  # if you have local static folder
 
 
 TAILWIND_APP_NAME = "theme"
