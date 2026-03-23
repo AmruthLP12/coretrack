@@ -4,43 +4,44 @@
 {% block title %}{% if form.instance.pk %}Update Ticket{% else %}Create Ticket{% endif %} - CoreTrack{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
-    <div class="card bg-base-100 shadow-2xl border border-base-300 overflow-hidden">
+    <div class="max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div class="card bg-base-100 shadow-2xl border border-base-300 overflow-hidden">
         <!-- Accent Bar -->
-        <div class="h-2 w-full bg-gradient-to-r from-primary to-secondary"></div>
-        
-        <div class="card-body p-8 md:p-12">
-            <h2 class="card-title text-3xl font-extrabold tracking-tight mb-2">
-                {% if form.instance.pk %}Update Ticket{% else %}Create New Ticket{% endif %}
-            </h2>
-            <p class="text-base-content/60 mb-10 font-medium">
-                {% if form.instance.pk %}
-                Modify the details of your existing support request <strong>{{ form.instance.ticket_id }}</strong>.
-                {% else %}
-                Submit a new enterprise support request. Our team will review it shortly.
-                {% endif %}
-            </p>
+            <div class="h-2 w-full bg-gradient-to-r from-primary to-secondary"></div>
 
-            <form method="post" class="space-y-8">
-                {% csrf_token %}
-                
-                {% render_field form.title label_icon="fas fa-id-badge text-success-500" %}
-                {% render_field form.description label_icon="fas fa-id-badge text-success-500" %}
-                {% render_field form.status label_icon="fas fa-id-badge text-success-500" %}
-                {% render_field form.priority label_icon="fas fa-id-badge text-success-500" %}
+            <div class="card-body p-8 md:p-12">
+                <h2 class="card-title text-3xl font-extrabold tracking-tight mb-2">
+                    {% if form.instance.pk %}Update Ticket{% else %}Create New Ticket{% endif %}
+                </h2>
+                <p class="text-base-content/60 mb-10 font-medium">
+                    {% if form.instance.pk %}
+                        Modify the details of your existing support request <strong>{{ form.instance.ticket_id }}</strong>.
+                    {% else %}
+                        Submit a new enterprise support request. Our team will review it shortly.
+                    {% endif %}
+                </p>
 
-                <div class="divider border-base-300/50 my-4"></div>
+                <form method="post" class="space-y-8">
+                    {% csrf_token %}
 
-                <div class="flex flex-col sm:flex-row justify-end items-center gap-4 mt-8">
-                    <a href="{% url 'tracker-list' %}" class="btn btn-ghost rounded-xl px-8 order-2 sm:order-1 w-full sm:w-auto">
-                        Go Back
-                    </a>
-                    <button type="submit" class="btn btn-primary rounded-xl px-12 shadow-lg shadow-primary/20 hover:scale-105 transition-all order-1 sm:order-2 w-full sm:w-auto font-bold tracking-tight">
-                        {% if form.instance.pk %}Save Changes{% else %}Create Ticket{% endif %}
-                    </button>
-                </div>
-            </form>
+                    {% render_field form.title label_icon="fas fa-id-badge text-success-500" %}
+                    {% render_field form.description label_icon="fas fa-id-badge text-success-500" %}
+                    {% render_field form.status label_icon="fas fa-id-badge text-success-500" %}
+                    {% render_field form.amount label_icon="fas fa-id-badge text-success-500" %}
+                    {% render_field form.priority label_icon="fas fa-id-badge text-success-500" %}
+
+                    <div class="divider border-base-300/50 my-4"></div>
+
+                    <div class="flex flex-col sm:flex-row justify-end items-center gap-4 mt-8">
+                        <a href="{% url 'tracker-list' %}" class="btn btn-ghost rounded-xl px-8 order-2 sm:order-1 w-full sm:w-auto">
+                            Go Back
+                        </a>
+                        <button type="submit" class="btn btn-primary rounded-xl px-12 shadow-lg shadow-primary/20 hover:scale-105 transition-all order-1 sm:order-2 w-full sm:w-auto font-bold tracking-tight">
+                            {% if form.instance.pk %}Save Changes{% else %}Create Ticket{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

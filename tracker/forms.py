@@ -97,7 +97,12 @@ class TrackerForm(forms.ModelForm):
         dynamic_data = {}
         for key in self.fields:
             if key not in self.Meta.fields:
-                dynamic_data[key] = cleaned_data.get(key)
+                val = cleaned_data.get(key)
+                # Convert Decimal to float for JSON serialization if needed
+                from decimal import Decimal
+                if isinstance(val, Decimal):
+                    val = float(val)
+                dynamic_data[key] = val
 
         cleaned_data["data"] = dynamic_data
         return cleaned_data

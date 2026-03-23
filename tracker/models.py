@@ -2,6 +2,7 @@ from django.db import models
 from django.db import transaction
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 def get_financial_year(d=None):
